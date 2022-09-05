@@ -1,0 +1,6 @@
+/.env
+/.eslintrc.json
+/.vscode
+/data.sqlite
+/node_modules
+/package-lock.json
