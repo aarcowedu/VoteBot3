@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js')
-const { adminMenuBuilder } = require('discord.js')
+const { adminMenuBuilder } = require('../builders')
 module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName('Vote Menu Admin')
