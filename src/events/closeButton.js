@@ -12,7 +12,7 @@ module.exports = {
       updatedMenu.components = []
       await interaction.update(updatedMenu)
       const items = interaction.client.db.prepare('SELECT name FROM items WHERE menuID = ?').all(menuData.menuID)
-      const message = '**Closed Menu Items**\n' + items.map((item) => item.name).join('\n')
+      const message = '**Closed Menu Items**\n\n' + items.map((item) => item.name).join('\n')
       await interaction.followUp({ content: message })
       interaction.client.db.prepare('DELETE FROM menus WHERE menuID = ?').run(menuData.menuID)
     } catch (error) {

@@ -49,6 +49,10 @@ const menuBuilder = async (db, menuID) => {
   rows.push(new ActionRowBuilder()
     .addComponents([
       new ButtonBuilder()
+        .setCustomId('list')
+        .setLabel('List')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
         .setCustomId('add')
         .setLabel('Add')
         .setStyle(ButtonStyle.Primary),
