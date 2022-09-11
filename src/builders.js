@@ -2,14 +2,14 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, Button
 const menuBuilder = async (db, menuID) => {
   const menuEmbed = new EmbedBuilder()
     .setTitle('Vote menu!')
-    .setDescription('New menu!')
+    .setDescription('No votes cast!')
   const rows = []
 
   if (menuID) {
     let description = ''
-    const itemsWithVotes = db.prepare('SELECT itemID, name, COUNT(voteID) FROM items INNER JOIN votes USING(itemID) WHERE menuID = ? GROUP BY itemID ORDER BY COUNT(voteID) ASC').all(menuID)
+    const itemsWithVotes = db.prepare('SELECT itemID, name, COUNT(voteID) FROM items INNER JOIN votes USING(itemID) WHERE items.menuID = ? GROUP BY itemID ORDER BY COUNT(voteID) ASC').all(menuID)
     for (const item of itemsWithVotes) {
-      description += `[${item['COUNT(voteID)']}] ${item.name}\n`
+      description += `[${item['COUNT(voteID)']}] **${item.name}**\n`
       const votesOfItem = db.prepare('SELECT accountID FROM votes WHERE itemID = ?').all(item.itemID)
       for (const vote of votesOfItem) {
         description += `<@${vote.accountID}> `
@@ -23,7 +23,7 @@ const menuBuilder = async (db, menuID) => {
     for (const item of items) {
       itemList.push({
         label: item.name,
-        value: item.itemID
+        value: item.itemID.toString()
       })
     }
     if (itemList.length !== 0) {

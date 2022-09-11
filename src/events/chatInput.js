@@ -2,7 +2,7 @@
 module.exports = {
   name: 'interactionCreate',
   async execute (interaction) {
-    if (!(interaction.isChatInputCommand() || interaction.isMessageContextMenuCommand())) return
+    if (!interaction.isChatInputCommand()) return
 
     const command = interaction.client.commands.get(interaction.commandName)
 
