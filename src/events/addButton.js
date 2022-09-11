@@ -7,8 +7,8 @@ module.exports = {
   async execute (interaction) {
     if (!(interaction.isButton() && interaction.customId === 'add')) return
     try {
-      const roleID = getMenuData(interaction.message.id, interaction.client.db).roleID
-      if (!interaction.member.roles.cache.has(roleID)) return await interaction.reply({ content: 'You do not have the role to administrate this vote menu!', ephemeral: true })
+      const menuData = getMenuData(interaction.message.id, interaction.client.db)
+      if (!interaction.member.roles.cache.has(menuData.roleID)) return await interaction.reply({ content: 'You do not have the role to administrate this vote menu!', ephemeral: true })
       const modal = new ModalBuilder()
         .setCustomId(interaction.message.id)
         .setTitle('Add Items')

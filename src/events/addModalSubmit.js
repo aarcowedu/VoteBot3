@@ -9,7 +9,9 @@ module.exports = {
       const items = interaction.fields.getTextInputValue('items')
       if (!items) return await interaction.reply('No items were added!')
       const menuData = getMenuData(interaction.message.id, interaction.client.db)
-      const itemsList = items.split('\n')
+      const itemsList = items.split('\n').filter(element => {
+        return element !== ''
+      })
       const placeholders = itemsList.map((item) => `('${item}', ${menuData.menuID})`).join(',')
       const stmtString = 'INSERT INTO items(name, menuID) VALUES ' + placeholders
       interaction.client.db.prepare(stmtString).run()
