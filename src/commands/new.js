@@ -13,8 +13,6 @@ module.exports = {
     ),
   async execute (interaction) {
     const message = await interaction.reply(await menuBuilder(interaction.client.db, undefined))
-    await interaction.client.db.serialize(() => {
-      interaction.client.db.run('INSERT INTO menus (messageID, channelID, guildID, roleID) VALUES (?, ?, ?, ?)', [message.id, message.channelId, message.guildId, interaction.options.getRole('adminrole').id])
-    })
+    interaction.client.db.prepare('INSERT INTO menus (messageID, channelID, guildID, roleID) VALUES (?, ?, ?, ?)').run(message.id, message.channelId, message.guildId, interaction.options.getRole('adminrole').id)
   }
 }

@@ -2,17 +2,16 @@ const { Client, GatewayIntentBits, Collection } = require('discord.js')
 const { config } = require('dotenv')
 const { readdirSync } = require('node:fs')
 const { join } = require('node:path')
-const sqlite3 = require('sqlite3')
+const Database = require('better-sqlite3')
 config()
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
-client.db = new sqlite3.Database('data.sqlite')
-client.db.serialize(() => {
-  client.db.run('CREATE TABLE IF NOT EXISTS menus (menuID INTEGER PRIMARY KEY, messageID TEXT NOT NULL, channelID TEXT NOT NULL, guildID TEXT NOT NULL, roleID TEXT NOT NULL)')
-    .run('CREATE TABLE IF NOT EXISTS items (itemID INTEGER PRIMARY KEY, name TEXT NOT NULL, menuID INTEGER NOT NULL, FOREIGN KEY (menuID) REFERENCES menus (menuID) ON UPDATE CASCADE ON DELETE CASCADE)')
-    .run('CREATE TABLE IF NOT EXISTS votes (voteID INTEGER PRIMARY KEY, accountID TEXT NOT NULL, menuID INTEGER NOT NULL, itemID INTEGER NOT NULL, FOREIGN KEY (menuID) REFERENCES menus (menuID) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (itemID) REFERENCES items (itemID) ON UPDATE CASCADE ON DELETE CASCADE)')
-})
+client.db = new Database('data.sqlite')
+client.db.prepare('CREATE TABLE IF NOT EXISTS menus (menuID INTEGER PRIMARY KEY, messageID TEXT NOT NULL, channelID TEXT NOT NULL, guildID TEXT NOT NULL, roleID TEXT NOT NULL)').run()
+client.db.prepare('CREATE TABLE IF NOT EXISTS items (itemID INTEGER PRIMARY KEY, name TEXT NOT NULL, menuID INTEGER NOT NULL, FOREIGN KEY (menuID) REFERENCES menus (menuID) ON UPDATE CASCADE ON DELETE CASCADE)').run()
+client.db.prepare('CREATE TABLE IF NOT EXISTS votes (voteID INTEGER PRIMARY KEY, accountID TEXT NOT NULL, menuID INTEGER NOT NULL, itemID INTEGER NOT NULL, FOREIGN KEY (menuID) REFERENCES menus (menuID) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (itemID) REFERENCES items (itemID) ON UPDATE CASCADE ON DELETE CASCADE)').run()
+
 client.commands = new Collection()
 
 const commandsPath = join(__dirname, 'commands')

@@ -9,7 +9,7 @@ module.exports = {
     try {
       if (interaction.customId === 'add') {
         console.log(interaction.message.id)
-        const roleID = await getMenuRole(interaction.message.id, interaction.client.db)
+        const roleID = getMenuRole(interaction.message.id, interaction.client.db)
         if (!interaction.member.roles.cache.has(roleID)) return await interaction.reply({ content: 'You do not have the role to administrate this vote menu!', ephemeral: true })
         const modal = new ModalBuilder()
           .setCustomId(interaction.message.id)
