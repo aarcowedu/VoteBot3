@@ -7,7 +7,7 @@ const menuBuilder = async (db, menuID) => {
 
   if (menuID) {
     let description = ''
-    const itemsWithVotes = db.prepare('SELECT itemID, name, COUNT(voteID) FROM items INNER JOIN votes USING(itemID) WHERE items.menuID = ? GROUP BY itemID ORDER BY COUNT(voteID) ASC').all(menuID)
+    const itemsWithVotes = db.prepare('SELECT itemID, name, COUNT(voteID) FROM items INNER JOIN votes USING(itemID) WHERE items.menuID = ? GROUP BY itemID ORDER BY COUNT(voteID) DESC').all(menuID)
     for (const item of itemsWithVotes) {
       description += `[${item['COUNT(voteID)']}] **${item.name}**\n`
       const votesOfItem = db.prepare('SELECT accountID FROM votes WHERE itemID = ?').all(item.itemID)
